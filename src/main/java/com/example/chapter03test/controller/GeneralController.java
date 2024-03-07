@@ -21,7 +21,7 @@ public class GeneralController {
     public String listPosts(Model model) {
         model.addAttribute("posts", postService.findAllPosts());
         model.addAttribute("postForm", new PostForm());
-        return "posts";
+        return "postsList";
     }
 
     @PostMapping("/posts")
