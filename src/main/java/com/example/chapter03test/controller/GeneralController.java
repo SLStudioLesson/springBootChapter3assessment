@@ -25,9 +25,7 @@ public class GeneralController {
     }
 
     @PostMapping("/posts")
-    public String addPost(
-            // TODO UserDetailを引数に設定しとく
-            ) {
+    public String addPost() {
         return null;
     }
 }
