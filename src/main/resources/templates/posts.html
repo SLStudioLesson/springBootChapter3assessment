@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title},~{::body/content()})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+
+<body>
+    <h1>Welcome to the SLgram</h1>
+    <div class="container mt-5 pb-5" style="padding-bottom: 100px;">
+        <h2>Posts</h2>
+        <div th:each="post : ${posts}" class="post d-flex border p-3 mb-3">
+            <div class="post-author-info me-3">
+                <h5 class="post-author" th:text="${post.user.name}"></h5>
+                <small class="text-muted post-date"
+                    th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+            </div>
+            <div class="post-body">
+                <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="post-image img-fluid mb-2" />
+                <p th:text="${post.content}" class="post-content"></p>
+            </div>
+        </div>
+        <div class="sticky-sm-bottom bg-light p-3" style="box-shadow: 0 -5px 5px -5px #333; margin-bottom: 5rem;">
+            <form th:action="@{/general/posts}" th:object="${postForm}" method="post" enctype="multipart/form-data"
+                class="container">
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content:</label>
+                    <input type="text" id="content" th:field="*{content}" class="form-control" style="height: 1.5rem;">
+                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
+                        class="invalid-feedback d-block"></div>
+                </div>
+                <div class="mb-3 d-flex align-items-end">
+                    <div class="me-3 flex-grow-1">
+                        <label for="image" class="form-label">Image:</label>
+                        <input type="file" id="image" th:field="*{image}" class="form-control">
+                        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="invalid-feedback d-block">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

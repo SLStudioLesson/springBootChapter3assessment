@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title},~{::body/content()})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the SLgram</h1>
+    <div class="container mt-5">
+        <h2>Posts</h2>
+        <div th:each="post : ${posts}" class="post d-flex border p-3 mb-3">
+            <div class="post-author-info me-3">
+                <h5 class="post-author" th:text="${post.user.name}"></h5>
+                <small class="text-muted post-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+            </div>
+            <div class="post-body">
+                <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="post-image img-fluid mb-2" />
+                <p th:text="${post.content}" class="post-content"></p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
