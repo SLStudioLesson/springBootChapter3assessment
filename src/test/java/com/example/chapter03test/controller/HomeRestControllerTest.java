@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.example.chapter03test.TestDBUtil;
 import com.example.chapter03test.model.Post;
 import com.example.chapter03test.model.User;
 
@@ -34,7 +35,9 @@ public class HomeRestControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
+    void setup() throws Exception {
+        TestDBUtil.resetDB(em);
+
         User user1 = new User("test1@example.com", "password", "user1", 21, "ROLE_GENERAL");
         User user2 = new User("test2@example.com", "password", "user2", 21, "ROLE_GENERAL");
         Post post1 = new Post("content1", "url", user1);
@@ -56,10 +59,7 @@ public class HomeRestControllerTest {
 
     @AfterEach
     void setDown() throws Exception {
-        em.getEntityManager().createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
-        em.getEntityManager().createNativeQuery("TRUNCATE TABLE posts RESTART IDENTITY").executeUpdate();
-        em.getEntityManager().createNativeQuery("TRUNCATE TABLE users RESTART IDENTITY").executeUpdate();
-        em.getEntityManager().createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        TestDBUtil.resetDB(em);
     }
 
     @Tag("Q5")

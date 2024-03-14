@@ -1,4 +1,4 @@
-package com.example.chapter03test;
+package com.example.chapter03test.config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
-public class RoleTest {
+public class SecurityConfigTest {
     private MockMvc mockMvc;
 
     @Autowired

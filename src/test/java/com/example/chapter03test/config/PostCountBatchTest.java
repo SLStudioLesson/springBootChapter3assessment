@@ -1,4 +1,4 @@
-package com.example.chapter03test;
+package com.example.chapter03test.config;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import com.example.chapter03test.config.PostCountBatch;
+import com.example.chapter03test.TestDBUtil;
 import com.example.chapter03test.model.Post;
 import com.example.chapter03test.model.User;
 
@@ -55,7 +55,8 @@ public class PostCountBatchTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+        TestDBUtil.resetDB(em);
         testOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(testOut));
 
@@ -71,10 +72,7 @@ public class PostCountBatchTest {
     void setDown() throws Exception {
         System.setOut(systemOut);
 
-        em.getEntityManager().createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
-        em.getEntityManager().createNativeQuery("TRUNCATE TABLE posts RESTART IDENTITY").executeUpdate();
-        em.getEntityManager().createNativeQuery("TRUNCATE TABLE users RESTART IDENTITY").executeUpdate();
-        em.getEntityManager().createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        TestDBUtil.resetDB(em);
     }
 
     @Tag("Q4")
