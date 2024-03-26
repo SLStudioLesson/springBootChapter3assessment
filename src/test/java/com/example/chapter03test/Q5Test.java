@@ -1,9 +1,7 @@
-package com.example.chapter03test.controller;
+package com.example.chapter03test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,17 +14,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.chapter03test.TestDBUtil;
-import com.example.chapter03test.model.Post;
-import com.example.chapter03test.model.User;
-
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestEntityManager
 @Transactional
-public class HomeRestControllerTest {
+public class Q5Test {
 
     @Autowired
     private TestEntityManager em;
@@ -37,24 +31,7 @@ public class HomeRestControllerTest {
     @BeforeEach
     void setup() throws Exception {
         TestDBUtil.resetDB(em);
-
-        User user1 = new User("test1@example.com", "password", "user1", 21, "ROLE_GENERAL");
-        User user2 = new User("test2@example.com", "password", "user2", 21, "ROLE_GENERAL");
-        Post post1 = new Post("content1", "url", user1);
-        Post post2 = new Post("content2", "url", user1);
-        Post post3 = new Post("content3", "url", user2);
-        post1.setCreatedAt(LocalDateTime.parse("2024-03-07T00:00:00"));
-        post2.setCreatedAt(LocalDateTime.parse("2024-03-09T00:00:00"));
-        post3.setCreatedAt(LocalDateTime.parse("2024-03-08T00:00:00"));
-        post1.setUser(user1);
-        post2.setUser(user1);
-        post3.setUser(user2);
-
-        em.persist(user1);
-        em.persist(user2);
-        em.persist(post1);
-        em.persist(post2);
-        em.persist(post3);
+        TestDBUtil.insertPosts(em, 1, 3);
     }
 
     @AfterEach
@@ -67,6 +44,6 @@ public class HomeRestControllerTest {
     void getNewestPostsTest() throws Exception {
         mockMvc.perform(get("/api"))
             .andExpect(status().isOk())
-            .andExpect(content().json("{\"id\":2,\"content\":\"content2\",\"imageUrl\":\"url\",\"createdAt\":\"2024-03-09T00:00:00\"}"));
+            .andExpect(content().json("{\"id\":3,\"content\":\"content3\",\"imageUrl\":\"imageUrl\",\"createdAt\":\"2024-03-04T00:00:00\"}"));
     }
 }
